@@ -1,18 +1,22 @@
 # SecureMonk
 
-A frontend dashboard concept for defensive AI security operations:
+A defensive AI security dashboard for:
 
-- Register AI agents, LLM endpoints, and API keys.
-- Track basic risk posture for prompt injection hardening.
-- Query Shodan for exposed AI-related internet assets.
-- Align remediation activities with OWASP LLM Top 10 themes.
+- Registering AI agents, LLM endpoints, and API keys.
+- Tracking basic risk posture for prompt injection hardening.
+- Querying Shodan for exposed AI-related internet assets.
+- Aligning remediation activities with OWASP LLM Top 10 themes.
 
 ## Run locally
 
 ```bash
-python3 -m http.server 4173
+export SHODAN_API_KEY="<your_shodan_api_key>"
+python3 server.py
 ```
 
 Then open `http://localhost:4173`.
 
-> Note: Shodan API calls from browser clients may fail due to CORS or key policy restrictions. Use a backend proxy for production deployments.
+## Why a backend proxy for Shodan?
+
+Shodan lookups are routed through `/api/shodan/search` in `server.py`.
+This avoids browser CORS/key exposure issues and keeps your API key server-side.
