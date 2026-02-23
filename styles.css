@@ -106,17 +106,8 @@ nav {
 
 .content {
   display: grid;
-}
-
-.page-section {
-  display: none;
   gap: 1rem;
 }
-
-.page-section.active {
-  display: grid;
-}
-
 
 .hero {
   padding: 1.4rem;

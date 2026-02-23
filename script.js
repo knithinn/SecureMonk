@@ -10,8 +10,6 @@ const elements = {
   riskCount: document.querySelector('#riskCount'),
   exposedList: document.querySelector('#exposedList'),
   shodanStatus: document.querySelector('#shodanStatus'),
-  navItems: [...document.querySelectorAll('.nav-item')],
-  pages: [...document.querySelectorAll('.page-section')],
 };
 
 let state = {
@@ -52,44 +50,6 @@ function maskKey(value) {
   }
 
   return `${value.slice(0, 3)}••••${value.slice(-3)}`;
-}
-
-function setActivePage(pageId) {
-  for (const page of elements.pages) {
-    page.classList.toggle('active', page.id === pageId);
-  }
-
-  for (const navItem of elements.navItems) {
-    navItem.classList.toggle('active', navItem.dataset.page === pageId);
-  }
-}
-
-function resolvePageId(hashValue) {
-  const cleanHash = hashValue?.replace('#', '') || 'overview';
-  const exists = elements.pages.some((page) => page.id === cleanHash);
-  return exists ? cleanHash : 'overview';
-}
-
-function setupSidebarNavigation() {
-  for (const navItem of elements.navItems) {
-    navItem.addEventListener('click', (event) => {
-      event.preventDefault();
-      const pageId = navItem.dataset.page;
-      if (!pageId) {
-        return;
-      }
-
-      setActivePage(pageId);
-      history.replaceState(null, '', `#${pageId}`);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-
-  window.addEventListener('hashchange', () => {
-    setActivePage(resolvePageId(window.location.hash));
-  });
-
-  setActivePage(resolvePageId(window.location.hash));
 }
 
 function renderAgents() {
@@ -166,19 +126,21 @@ elements.agentForm.addEventListener('submit', (event) => {
 elements.shodanForm.addEventListener('submit', async (event) => {
   event.preventDefault();
   const formData = new FormData(elements.shodanForm);
+  const shodanKey = formData.get('shodanKey');
   const query = formData.get('query');
 
   elements.shodanStatus.textContent = 'Running Shodan discovery...';
   elements.shodanStatus.classList.remove('muted');
 
   try {
-    const response = await fetch(`/api/shodan/search?query=${encodeURIComponent(query)}`);
+    const response = await fetch(
+      `https://api.shodan.io/shodan/host/search?key=${encodeURIComponent(
+        shodanKey
+      )}&query=${encodeURIComponent(query)}`
+    );
 
     if (!response.ok) {
-      const errorPayload = await response.json().catch(() => ({}));
-      const errorMessage =
-        errorPayload.error || errorPayload.details || `Shodan proxy error (${response.status})`;
-      throw new Error(errorMessage);
+      throw new Error(`Shodan API error (${response.status})`);
     }
 
     const payload = await response.json();
@@ -186,11 +148,11 @@ elements.shodanForm.addEventListener('submit', async (event) => {
     elements.shodanStatus.textContent = `Found ${payload.total ?? state.exposures.length} potential exposure(s).`;
   } catch (error) {
     state.exposures = [];
-    elements.shodanStatus.textContent = `Shodan discovery failed: ${error.message}`;
+    elements.shodanStatus.textContent =
+      'Unable to retrieve Shodan data from browser directly. Use a server-side proxy in production.';
   }
 
   render();
 });
 
-setupSidebarNavigation();
 render();

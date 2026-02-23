@@ -24,10 +24,10 @@
         </div>
 
         <nav>
-          <a class="nav-item active" href="#overview" data-page="overview">Overview</a>
-          <a class="nav-item" href="#agents" data-page="agents">Agent Registry</a>
-          <a class="nav-item" href="#shodan" data-page="shodan">Shodan Exposure</a>
-          <a class="nav-item" href="#playbook" data-page="playbook">OWASP Playbook</a>
+          <a class="nav-item active" href="#overview">Overview</a>
+          <a class="nav-item" href="#agents">Agent Registry</a>
+          <a class="nav-item" href="#shodan">Shodan Exposure</a>
+          <a class="nav-item" href="#playbook">OWASP Playbook</a>
         </nav>
 
         <div class="sidebar-footnote">
@@ -40,55 +40,43 @@
       </aside>
 
       <main class="content">
-        <section class="page-section active" id="overview" data-page="overview">
-          <header class="hero glass">
-            <div>
-              <p class="eyebrow">AI Security Monitoring</p>
-              <h1>Prompt Injection Prevention Command Center</h1>
-              <p class="hero-copy">
-                Register agents and LLM APIs, validate defensive controls aligned to
-                OWASP Top 10 for LLM Applications, and identify externally exposed
-                AI assets through Shodan.
-              </p>
-            </div>
-            <div class="hero-badges">
-              <span>OWASP LLM01</span>
-              <span>LLM07</span>
-              <span>ASVS-AI</span>
-            </div>
-          </header>
+        <header class="hero glass" id="overview">
+          <div>
+            <p class="eyebrow">AI Security Monitoring</p>
+            <h1>Prompt Injection Prevention Command Center</h1>
+            <p class="hero-copy">
+              Register agents and LLM APIs, validate defensive controls aligned to
+              OWASP Top 10 for LLM Applications, and identify externally exposed
+              AI assets through Shodan.
+            </p>
+          </div>
+          <div class="hero-badges">
+            <span>OWASP LLM01</span>
+            <span>LLM07</span>
+            <span>ASVS-AI</span>
+          </div>
+        </header>
 
-          <section class="metrics-grid">
-            <article class="metric-card glass">
-              <p>Registered Agents</p>
-              <h2 id="agentCount">0</h2>
-              <small>Internal + External targets</small>
-            </article>
-            <article class="metric-card glass">
-              <p>Exposed Endpoints</p>
-              <h2 id="exposedCount">0</h2>
-              <small>Discovered via Shodan</small>
-            </article>
-            <article class="metric-card glass">
-              <p>High Risk Flags</p>
-              <h2 id="riskCount">0</h2>
-              <small>Potentially weak controls</small>
-            </article>
-          </section>
-
-          <section class="panel glass">
-            <div class="panel-heading">
-              <h3>Dashboard Overview</h3>
-              <p>
-                Use the left menu to switch pages. Each page has dedicated controls
-                for registry, exposure intelligence, and OWASP-aligned hardening.
-              </p>
-            </div>
-          </section>
+        <section class="metrics-grid">
+          <article class="metric-card glass">
+            <p>Registered Agents</p>
+            <h2 id="agentCount">0</h2>
+            <small>Internal + External targets</small>
+          </article>
+          <article class="metric-card glass">
+            <p>Exposed Endpoints</p>
+            <h2 id="exposedCount">0</h2>
+            <small>Discovered via Shodan</small>
+          </article>
+          <article class="metric-card glass">
+            <p>High Risk Flags</p>
+            <h2 id="riskCount">0</h2>
+            <small>Potentially weak controls</small>
+          </article>
         </section>
 
-        <section class="page-section" id="agents" data-page="agents">
-          <article class="panel glass">
+        <section class="panel-grid">
+          <article class="panel glass" id="agents">
             <div class="panel-heading">
               <h3>Add AI Agent / LLM Integration</h3>
               <p>
@@ -160,19 +148,21 @@
               </table>
             </div>
           </article>
-        </section>
 
-        <section class="page-section" id="shodan" data-page="shodan">
-          <article class="panel glass">
+          <article class="panel glass" id="shodan">
             <div class="panel-heading">
               <h3>Shodan Exposure Intelligence</h3>
               <p>
                 Query internet-facing assets to identify exposed agent services
-                and harden access controls. Uses secure server-side Shodan proxy.
+                and harden access controls.
               </p>
             </div>
 
             <form id="shodanForm" class="form-grid compact">
+              <label>
+                Shodan API Key
+                <input required name="shodanKey" type="password" placeholder="Enter key" />
+              </label>
               <label>
                 Search Query
                 <input
@@ -185,42 +175,40 @@
             </form>
 
             <p id="shodanStatus" class="status muted">
-              No active scan. Enter a query to discover exposed AI assets.
+              No active scan. Enter key and query to discover exposed AI assets.
             </p>
 
             <ul id="exposedList" class="exposed-list"></ul>
           </article>
         </section>
 
-        <section class="page-section" id="playbook" data-page="playbook">
-          <section class="panel glass">
-            <div class="panel-heading">
-              <h3>OWASP AI Defensive Playbook</h3>
-            </div>
-            <div class="playbook-grid">
-              <article>
-                <h4>Prompt Injection (LLM01)</h4>
-                <p>
-                  Validate system prompt isolation, instruction hierarchy, and
-                  sanitization of untrusted retrieval content.
-                </p>
-              </article>
-              <article>
-                <h4>Insecure Output Handling (LLM02)</h4>
-                <p>
-                  Apply output schema validation, policy-based filtering, and
-                  confidence thresholds before automation actions.
-                </p>
-              </article>
-              <article>
-                <h4>Excessive Agency (LLM08)</h4>
-                <p>
-                  Enforce least-privilege for tools, function calls, and plugin
-                  execution with strict allowlists.
-                </p>
-              </article>
-            </div>
-          </section>
+        <section class="panel glass" id="playbook">
+          <div class="panel-heading">
+            <h3>OWASP AI Defensive Playbook</h3>
+          </div>
+          <div class="playbook-grid">
+            <article>
+              <h4>Prompt Injection (LLM01)</h4>
+              <p>
+                Validate system prompt isolation, instruction hierarchy, and
+                sanitization of untrusted retrieval content.
+              </p>
+            </article>
+            <article>
+              <h4>Insecure Output Handling (LLM02)</h4>
+              <p>
+                Apply output schema validation, policy-based filtering, and
+                confidence thresholds before automation actions.
+              </p>
+            </article>
+            <article>
+              <h4>Excessive Agency (LLM08)</h4>
+              <p>
+                Enforce least-privilege for tools, function calls, and plugin
+                execution with strict allowlists.
+              </p>
+            </article>
+          </div>
         </section>
       </main>
     </div>
