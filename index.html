@@ -160,6 +160,10 @@
 
             <form id="shodanForm" class="form-grid compact">
               <label>
+                Shodan API Key
+                <input required name="shodanKey" type="password" placeholder="Enter key" />
+              </label>
+              <label>
                 Search Query
                 <input
                   required
@@ -171,7 +175,7 @@
             </form>
 
             <p id="shodanStatus" class="status muted">
-              No active scan. Enter a query to discover exposed AI assets.
+              No active scan. Enter key and query to discover exposed AI assets.
             </p>
 
             <ul id="exposedList" class="exposed-list"></ul>
